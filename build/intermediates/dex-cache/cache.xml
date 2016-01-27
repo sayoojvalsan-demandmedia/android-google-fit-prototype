@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e8444d58a06cbe1422b95a308a30aff05d9e8b6e">
+        <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/android-google-fit-prototype-googlefitmodule-unspecified_36c334d11bd563780c3c04971aa1f00648c56d2f.jar" />
+    </item>
+
+</items>

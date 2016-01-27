@@ -1,1 +1,1 @@
-include ':app', ':googlefitmodule', ':googlefitmodule', ':googlefitmodule'
+include ':app', ':googlefitmodule', ':googlefitmodule', ':googlefitmodule', ':greendaodbgenerator'

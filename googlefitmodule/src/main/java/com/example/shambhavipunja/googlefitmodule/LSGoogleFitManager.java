@@ -1,11 +1,12 @@
 package com.example.shambhavipunja.googlefitmodule;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
-
+import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,6 +24,7 @@ public class LSGoogleFitManager {
     private static GoogleApiClient mClient = null;
     private LSGoogleFitConnectionListener mConnectionListener;
     public static final String TAG = "FitnessClient";
+    public static final String GET_HISTORY = "FitnessHistory";
     public static LSGoogleFitManager lsGoogleFitManager;
 
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
@@ -55,6 +57,7 @@ public class LSGoogleFitManager {
 
                                 // Subscribe to some data sources!
                                 new LSGoogleFitRecord().subscribe(mClient);
+                                startLSGoogleFitService();
                                 //resultcode = LSGoogleFitManager.AUTH_SUCCESS;
                             }
 
@@ -111,6 +114,12 @@ public class LSGoogleFitManager {
         });
     }
 
+    void startLSGoogleFitService(){
+        Intent intent = new Intent(mcontext, LSGoogleFitService.class);
+        intent.setAction(GET_HISTORY);
+        mcontext.startService(intent);
+
+    }
     void notifyConnectionStatus(String status){
         if (mConnectionListener != null){
             mConnectionListener.ConnectionStatus(status);
