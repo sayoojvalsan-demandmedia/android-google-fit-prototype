@@ -1,4 +1,4 @@
-package com.example.shambhavipunja.googlefitapp;
+package com.livestrong.tracker.googlefitapp;
 
 import org.junit.Test;
 

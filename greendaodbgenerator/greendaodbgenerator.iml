@@ -29,7 +29,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="freemarker-2.3.23" level="project" />
     <orderEntry type="library" exported="" name="greendao-generator-2.1.0" level="project" />
-    <orderEntry type="library" exported="" name="_Users_shambhavipunja_AndroidStudioProjects_android_google_fit_prototype_greendaodbgenerator_libs_greendao_generator_1_3_1_jar" level="project" />
-    <orderEntry type="library" exported="" name="_Users_shambhavipunja_AndroidStudioProjects_android_google_fit_prototype_greendaodbgenerator_libs_freemarker_2_3_22_jar" level="project" />
+    <orderEntry type="library" exported="" name="_Users_shambhavipunja_AndroidStudioProjects_android_google_fit_prototype_greendaodbgenerator_lib_greendao_generator_2_1_0_jar" level="project" />
   </component>
 </module>
