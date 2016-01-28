@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class LSGoogleFitService extends IntentService {
     public LSGoogleFitService(){
-        super("HistoryService");
+        super("Service");
     }
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.

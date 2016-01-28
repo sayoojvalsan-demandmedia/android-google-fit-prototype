@@ -53,7 +53,7 @@ public class PageFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 LSGoogleFitManager.lsGoogleFitManager.disconnectGoogleFit();
+                 LSGoogleFitManager.getLsGoogleFitManager().disconnectGoogleFit();
             }
         });
 

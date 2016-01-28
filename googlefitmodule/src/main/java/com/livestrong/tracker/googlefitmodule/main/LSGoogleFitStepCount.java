@@ -31,7 +31,7 @@ public class LSGoogleFitStepCount implements Runnable {
         Log.i("STEPS", "**************");
         DataReadRequest readRequest = queryFitnessData();
         DataReadResult dataReadResult =
-                Fitness.HistoryApi.readData(LSGoogleFitManager.getmClient(), readRequest).await(1, TimeUnit.MINUTES);
+                Fitness.HistoryApi.readData(LSGoogleFitManager.getLsGoogleFitManager().getClient(), readRequest).await(1, TimeUnit.MINUTES);
         printData(dataReadResult);
 
 

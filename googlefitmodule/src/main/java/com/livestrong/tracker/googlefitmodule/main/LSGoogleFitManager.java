@@ -20,24 +20,27 @@ import com.google.android.gms.fitness.Fitness;
  * Created by shambhavipunja on 1/25/16.
  */
 public class LSGoogleFitManager {
+    private static LSGoogleFitManager slsGoogleFitManager;
+    private GoogleApiClient mClient;
     private Context mcontext;
-    private static GoogleApiClient mClient = null;
     private LSGoogleFitConnectionListener mConnectionListener;
+    private LSGoogleFitDatabaseConn mlsGoogleFitDatabaseConn;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
-    public static LSGoogleFitManager lsGoogleFitManager;
+
 
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
         this.mcontext = context;
         this.mConnectionListener = connectionListener;
+        mlsGoogleFitDatabaseConn = LSGoogleFitDatabaseConn.getDbCon(mcontext);
         buildFitnessClient();
     }
 
     public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener errorlistener) {
-        if(lsGoogleFitManager == null){
-            lsGoogleFitManager = new LSGoogleFitManager(context, errorlistener);
+        if(slsGoogleFitManager == null){
+            slsGoogleFitManager = new LSGoogleFitManager(context, errorlistener);
         }
-        return lsGoogleFitManager;
+        return slsGoogleFitManager;
     }
 
     public void buildFitnessClient() {
@@ -102,12 +105,12 @@ public class LSGoogleFitManager {
         pendingResult.setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(Status status) {
-                if(status.isSuccess()) {
+                if (status.isSuccess()) {
 
-                    Toast.makeText(mcontext,"Google Fit disabled",Toast.LENGTH_LONG).show();
+                    Toast.makeText(mcontext, "Google Fit disabled", Toast.LENGTH_LONG).show();
                     Log.i(TAG, "Google Fit disabled");
 
-                }else{
+                } else {
                     Log.e(TAG, "Google Fit wasn't disabled " + status);
                 }
             }
@@ -131,8 +134,16 @@ public class LSGoogleFitManager {
         }
     }
 
-    public static GoogleApiClient getmClient() {
+    public GoogleApiClient getClient() {
         return mClient;
+    }
+
+    public static LSGoogleFitManager getLsGoogleFitManager() {
+        return slsGoogleFitManager;
+    }
+
+    public LSGoogleFitDatabaseConn getLsGoogleFitDatabaseConn() {
+        return mlsGoogleFitDatabaseConn;
     }
 }
 

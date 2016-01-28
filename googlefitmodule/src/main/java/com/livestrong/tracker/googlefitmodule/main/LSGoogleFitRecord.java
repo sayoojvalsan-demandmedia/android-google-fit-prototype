@@ -23,7 +23,7 @@ public class LSGoogleFitRecord {
                     @Override
                     public void onResult(Status status) {
                         if (status.isSuccess()) {
-                            LSGoogleFitManager.lsGoogleFitManager.notifySubscribeStatus("Success");
+                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus("Success");
                             if (status.getStatusCode()
                                     == FitnessStatusCodes.SUCCESS_ALREADY_SUBSCRIBED) {
                                 Log.i(TAG, "Existing subscription for activity detected.");
@@ -31,7 +31,7 @@ public class LSGoogleFitRecord {
                                 Log.i(TAG, "Successfully subscribed!");
                             }
                         } else {
-                            LSGoogleFitManager.lsGoogleFitManager.notifySubscribeStatus("Not Success");
+                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus("Not Success");
                             Log.i(TAG, "There was a problem subscribing.");
                         }
                     }
