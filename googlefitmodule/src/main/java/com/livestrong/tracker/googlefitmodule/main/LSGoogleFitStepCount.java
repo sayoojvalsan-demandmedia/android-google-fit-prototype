@@ -2,6 +2,7 @@ package com.livestrong.tracker.googlefitmodule.main;
 
 import android.util.Log;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
 import com.google.android.gms.fitness.data.DataPoint;
@@ -30,8 +31,9 @@ public class LSGoogleFitStepCount implements Runnable {
     public void run() {
         Log.i("STEPS", "**************");
         DataReadRequest readRequest = queryFitnessData();
+        GoogleApiClient client = LSGoogleFitManager.getLsGoogleFitManager().getClient();
         DataReadResult dataReadResult =
-                Fitness.HistoryApi.readData(LSGoogleFitManager.getLsGoogleFitManager().getClient(), readRequest).await(1, TimeUnit.MINUTES);
+                Fitness.HistoryApi.readData(client, readRequest).await(1, TimeUnit.MINUTES);
         printData(dataReadResult);
 
 
