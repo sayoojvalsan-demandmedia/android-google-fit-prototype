@@ -5,15 +5,22 @@
         jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="6d967e8363287ef7e9886ce579ea9e350e620667">
+        sha1="5805118b8ba3e8fdbec92e95be05d5343835fab8">
         <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/android-google-fit-prototype-googlefitmodule-unspecified_36c334d11bd563780c3c04971aa1f00648c56d2f.jar" />
     </item>
     <item
         jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/libs/greendao-2.1.0.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="77f53126ef0e77fef771800aee4db049ab398a28">
+        sha1="f5ecd993caac991acf3e62c2511e575e6f0da36c">
         <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/greendao-2.1.0_6fccd344dd623181f48bbd3f67b1a20b9c9a9253.jar" />
+    </item>
+    <item
+        jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/libs/joda-time-2.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6049e814ace31d6db6b6e58b8f7750af080b0cd4">
+        <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/joda-time-2.4_b699cbe2b4e7ede813d6c23bdbfc1ee0b3093d87.jar" />
     </item>
 
 </items>

@@ -1,5 +1,6 @@
 package com.livestrong.tracker.googlefitmodule.main;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -10,6 +11,10 @@ import com.livestrong.tracker.googlefitmodule.model.FitnessDataDao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Queue;
+
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.WhereCondition;
 
 /**
  * Created by shambhavipunja on 1/28/16.
@@ -55,6 +60,17 @@ public class LSGoogleFitDatabaseConn {
         List<FitnessData> list = mdao.queryBuilder()
                 .where(FitnessDataDao.Properties.Date.eq(date)).list();
         return list;
+    }
+
+    public Date GetLastInsertDate(){
+
+         List<FitnessData> list = mdao.queryBuilder().orderDesc(FitnessDataDao.Properties.Date).limit(1).list();
+         if(list.size() == 1){
+             return list.get(0).getDate();
+         }
+        else
+            return null;
+
     }
 
 

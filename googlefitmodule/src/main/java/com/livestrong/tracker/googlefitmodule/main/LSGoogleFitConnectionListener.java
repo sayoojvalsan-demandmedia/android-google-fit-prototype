@@ -7,3 +7,5 @@ public interface LSGoogleFitConnectionListener {
     public void ConnectionStatus(String Error);
     public void SubscribeStatus(String Error);
 }
+
+
