@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/android-google-fit-prototype.iml" filepath="$PROJECT_DIR$/android-google-fit-prototype.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/googlefitmodule/googlefitmodule.iml" filepath="$PROJECT_DIR$/googlefitmodule/googlefitmodule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendaodbgenerator/greendaodbgenerator.iml" filepath="$PROJECT_DIR$/greendaodbgenerator/greendaodbgenerator.iml" />
+    </modules>
+  </component>
+</project>
