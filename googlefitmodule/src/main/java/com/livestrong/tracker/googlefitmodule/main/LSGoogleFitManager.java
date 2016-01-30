@@ -21,19 +21,19 @@ import com.google.android.gms.fitness.Fitness;
  */
 public class LSGoogleFitManager {
     private static LSGoogleFitManager slsGoogleFitManager;
-    private GoogleApiClient mClient;
     private Context mcontext;
+    private GoogleApiClient mClient;
     private LSGoogleFitConnectionListener mConnectionListener;
-    private LSGoogleFitDatabaseConn mlsGoogleFitDatabaseConn;
+    private LSGoogleFitDatabaseManager mdbmanager;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
 
 
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
-        this.mcontext = context;
+        this.mcontext = context.getApplicationContext();
         this.mConnectionListener = connectionListener;
-        mlsGoogleFitDatabaseConn = LSGoogleFitDatabaseConn.getDbCon(mcontext);
-        buildFitnessClient();
+        mdbmanager = LSGoogleFitDatabaseManager.getinstance();
+        buildFitnessClient(context);
     }
 
     public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener errorlistener) {
@@ -43,9 +43,20 @@ public class LSGoogleFitManager {
         return slsGoogleFitManager;
     }
 
-    public void buildFitnessClient() {
+    /**
+     *
+     * @return
+     */
+    public Context getcontext() {
+        return mcontext;
+    }
+
+    /**
+     *
+     */
+    public void buildFitnessClient(final Context context) {
         // Create the Google API Client
-        mClient = new GoogleApiClient.Builder(mcontext)
+        mClient = new GoogleApiClient.Builder(context)
                 .addApi(Fitness.RECORDING_API)
                 .addApi(Fitness.HISTORY_API)
                 .addApi(Fitness.CONFIG_API)
@@ -78,15 +89,15 @@ public class LSGoogleFitManager {
                             }
                         }
                 )
-                .enableAutoManage((FragmentActivity) mcontext, 0, new GoogleApiClient.OnConnectionFailedListener() {
+                .enableAutoManage((FragmentActivity) context, 0, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(ConnectionResult result) {
 
                         Log.i(TAG, "Google Play services connection failed. Cause: Exception while connecting to Google Play services" +
-                                result.getErrorCode()+result.getErrorMessage()+result.toString());
+                                result.getErrorCode() + result.getErrorMessage() + result.toString());
 
                         notifyConnectionStatus(result.toString());
-                        Toast.makeText(mcontext,"failed",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "failed", Toast.LENGTH_LONG).show();
 
                     }
                 })
@@ -95,7 +106,7 @@ public class LSGoogleFitManager {
     }
 
     //Method to disconnect from Google Fit Services
-    public void disconnectGoogleFit() {
+    public void disconnectGoogleFit(final Context context) {
         if(!mClient.isConnected()){
             Log.e(TAG, "Google Fit wasn't connected");
             return;
@@ -107,7 +118,7 @@ public class LSGoogleFitManager {
             public void onResult(Status status) {
                 if (status.isSuccess()) {
 
-                    Toast.makeText(mcontext, "Google Fit disabled", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Google Fit disabled", Toast.LENGTH_LONG).show();
                     Log.i(TAG, "Google Fit disabled");
 
                 } else {
@@ -117,7 +128,7 @@ public class LSGoogleFitManager {
         });
     }
 
-    void startLSGoogleFitService(){
+    public void startLSGoogleFitService(){
         Intent intent = new Intent(mcontext, LSGoogleFitService.class);
         intent.setAction(GET_HISTORY);
         mcontext.startService(intent);
@@ -133,18 +144,17 @@ public class LSGoogleFitManager {
             mConnectionListener.SubscribeStatus(status);
         }
     }
-
     public GoogleApiClient getClient() {
         return mClient;
     }
 
     public static LSGoogleFitManager getLsGoogleFitManager() {
+        if(slsGoogleFitManager == null){
+            throw new IllegalStateException("Not initialized");
+        }
         return slsGoogleFitManager;
     }
 
-    public LSGoogleFitDatabaseConn getLsGoogleFitDatabaseConn() {
-        return mlsGoogleFitDatabaseConn;
-    }
 }
 
 

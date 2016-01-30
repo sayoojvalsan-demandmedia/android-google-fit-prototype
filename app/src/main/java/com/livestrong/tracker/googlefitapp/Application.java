@@ -12,4 +12,8 @@ public class Application extends android.app.Application {
         super.onCreate();
 
     }
+
+    Context getcontext(){
+        return  mcontext;
+    }
 }

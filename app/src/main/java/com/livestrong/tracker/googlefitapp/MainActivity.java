@@ -20,7 +20,6 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     private PagerAdapter mPageAdapter;
     private ViewPager mViewPager;
     private static final int NUM_PAGES = 5;
-    LSGoogleFitConnectionListener connectionListener;
 
 
     @Override
@@ -28,7 +27,7 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LSGoogleFitManager.initialize(this,connectionListener);
+        LSGoogleFitManager.initialize(this, this);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mPageAdapter =  new SectionsPagerAdapter(getSupportFragmentManager());
@@ -42,6 +41,7 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     @Override
     protected void onResume() {
         super.onResume();
+        LSGoogleFitManager.getLsGoogleFitManager().startLSGoogleFitService();
 
     }
 
@@ -74,12 +74,12 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     }
 
     @Override
-    public void ConnectionStatus(String Error) {
+    public void ConnectionStatus(String connectionStatus) {
 
     }
 
     @Override
-    public void SubscribeStatus(String Error) {
+    public void SubscribeStatus(String subscribeSt) {
 
     }
 

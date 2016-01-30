@@ -9,7 +9,6 @@ import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.data.Value;
 import com.google.android.gms.fitness.request.DataReadRequest;
 import com.google.android.gms.fitness.result.DataReadResult;
 
@@ -18,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,31 +25,33 @@ import java.util.concurrent.TimeUnit;
  */
 public class LSGoogleFitStepCount implements Runnable {
     public static String TAG = "Fitness-Steps";
-    private LSGoogleFitDatabaseConn lsGoogleFitDatabaseConn;
     private StepCountListener mstepCountListener;
-    HashMap<Long,Integer> step_map = new HashMap<Long,Integer>();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+    private HashMap<Date,Integer> mStepmap = new HashMap<Date,Integer>();
+    public SimpleDateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
 
     public LSGoogleFitStepCount(StepCountListener listener) {
-        lsGoogleFitDatabaseConn = LSGoogleFitManager.getLsGoogleFitManager().getLsGoogleFitDatabaseConn();
         mstepCountListener = listener;
     }
 
     @Override
     public void run() {
         Log.i(TAG,"STEPS");
+
         DataReadRequest readRequest = queryFitnessData();
         GoogleApiClient client = LSGoogleFitManager.getLsGoogleFitManager().getClient();
         DataReadResult dataReadResult =
                 Fitness.HistoryApi.readData(client, readRequest).await(1, TimeUnit.MINUTES);
-        printData(dataReadResult);
-
+        getStepData(dataReadResult);
 
     }
 
+    /**
+     *
+     * @return The readRequest of type DataReadRequest
+     */
     private DataReadRequest queryFitnessData() {
-        long endTime = getendTime();
-        long startTime = getstartTime();
+        long endTime = getEndTime();
+        long startTime = getStartTime();
 
         Log.i(TAG, "Range Start: " + dateFormat.format(startTime));
         Log.i(TAG, "Range End: " + dateFormat.format(endTime));
@@ -63,33 +65,39 @@ public class LSGoogleFitStepCount implements Runnable {
         return readRequest;
     }
 
-    private void printData(DataReadResult dataReadResult) {
+    private void getStepData(DataReadResult dataReadResult) {
         if (dataReadResult.getBuckets().size() > 0) {
             Log.i(TAG, "Number of returned buckets of DataSets is: "
                     + dataReadResult.getBuckets().size());
             for (Bucket bucket : dataReadResult.getBuckets()) {
                 List<DataSet> dataSets = bucket.getDataSets();
                 for (DataSet dataSet : dataSets) {
-                    dumpDataSet(dataSet);
+                    dumpDataPoint(dataSet);
                 }
             }
         } else if (dataReadResult.getDataSets().size() > 0) {
             /*Log.i(TAG, "Number of returned DataSets is: "
                     + dataReadResult.getDataSets().size());*/
             for (DataSet dataSet : dataReadResult.getDataSets()) {
-                dumpDataSet(dataSet);
+                dumpDataPoint(dataSet);
             }
         }
+
         Log.i(TAG,"HashMap");
-        for (Long key:step_map.keySet()) {
-            Log.i(TAG,dateFormat.format(key)+"----"+step_map.get(key));
+        //Log purpose
+        for(Map.Entry<Date,Integer> entry : mStepmap.entrySet()) {
+            Log.i( TAG , dateFormat.format(entry.getKey()) + "----" + entry.getValue() );
         }
-        notifyStepCountRetrieved(step_map);
 
-
+        notifyStepCountRetrieved(mStepmap);
     }
 
-    private void dumpDataSet(DataSet dataSet) {
+    /**
+     *
+     * @param dataSet
+     * get Step data for each day
+     */
+    private void dumpDataPoint(DataSet dataSet) {
         Log.i(TAG, "Data returned for Data type: " + dataSet.getDataType().getName());
 
         for (DataPoint dp : dataSet.getDataPoints()) {
@@ -101,8 +109,9 @@ public class LSGoogleFitStepCount implements Runnable {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);
+            Date date  = cal.getTime();
 
-           Log.i(TAG, "Data point:");
+            Log.i(TAG, "Data point:");
             Log.i(TAG, "\tType: " + dp.getDataType().getName());
 
             Log.i(TAG, dateFormat.format(cal.getTimeInMillis()));
@@ -110,9 +119,11 @@ public class LSGoogleFitStepCount implements Runnable {
             Log.i(TAG, "\tStartday: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
             Log.i(TAG, "\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
 
+            //store step count in hashmap.
             for (Field field : dp.getDataType().getFields()) {
                 if(field.getName().equals("steps")){
-                    step_map.put(cal.getTimeInMillis(),dp.getValue(field).asInt());
+
+                    mStepmap.put(date, dp.getValue(field).asInt());
                 }
                 Log.i(TAG, "\tField: " + field.getName() +
                         " Value: " + dp.getValue(field));
@@ -120,31 +131,41 @@ public class LSGoogleFitStepCount implements Runnable {
         }
     }
 
-    private long getendTime() {
+    /**
+     *
+     * @return The current time in millis.
+     */
+    private long getEndTime() {
         Calendar cal = Calendar.getInstance(); //set end time now
         return cal.getTimeInMillis();
     }
 
-    private long getstartTime(){
-        Date last_sync = lsGoogleFitDatabaseConn.GetLastInsertDate();
-        Log.i(TAG, "DATE***********: " + last_sync);
+    /**
+     *
+     * @return The last sync date or the date 1 month back in millis.
+     */
+    private long getStartTime(){
+        Date lastSync = LSGoogleFitDatabaseManager.getinstance().getLastInsertDate();
+        Log.i(TAG, "DATE***********: " + lastSync);
 
-        if (last_sync != null) {
-            return last_sync.getTime();
+        if (lastSync != null) {
+            //To get date last sync date for history
+            return lastSync.getTime();
         }
         else
         {
+            //When database is empty
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 00);
             cal.set(Calendar.MILLISECOND, 0);
-            cal.add(Calendar.DAY_OF_WEEK, -6);
+            cal.add(Calendar.DAY_OF_WEEK, -30); //retrieve data for the past 30 days.
             return cal.getTimeInMillis();
         }
     }
 
-    public void notifyStepCountRetrieved(HashMap<Long,Integer> step_map){
+    public void notifyStepCountRetrieved(HashMap<Date,Integer> step_map){
         if (mstepCountListener != null){
             mstepCountListener.stepCountRetrieved(step_map);
         }

@@ -4,8 +4,10 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,11 +18,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class LSGoogleFitService extends IntentService {
     public static final String TAG = "Service";
-    HashMap<Long,Integer> step_map;
+    private HashMap<Date,Integer> mStepMap;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+
 
     public LSGoogleFitService(){
         super("Service");
-        step_map = null;
+        mStepMap =  new HashMap<Date, Integer>();
     }
 
     @Override
@@ -42,20 +46,24 @@ public class LSGoogleFitService extends IntentService {
 
 
 
-        executorService.submit(new LSGoogleFitStepCount(new StepCountListener() {
-            @Override
-            public void stepCountRetrieved(HashMap<Long, Integer> steps) {
-                Log.i(TAG, "steps received");
-                for (Long key:steps.keySet()) {
-                    step_map.put(key,steps.get(key));
-            }
-            }
-        })
+        executorService.execute(new LSGoogleFitStepCount(new StepCountListener() {
+                    @Override
+                    public void stepCountRetrieved(HashMap<Date, Integer> steps) {
+                        Log.i(TAG, "steps received");
+
+                        for (Map.Entry<Date,Integer> entry : steps.entrySet()) {
+                            mStepMap.put(entry.getKey(), entry.getValue());
+//                            Log.i(TAG, dateFormat.format(entry.getKey()));
+//                            Log.i(TAG, entry.getValue().toString());
+                        }
+                    }
+                })
         );
 
         executorService.shutdown();
+
         try {
-            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
                 // pool didn't terminate after the first try
                 executorService.shutdownNow();
             }
@@ -67,6 +75,9 @@ public class LSGoogleFitService extends IntentService {
             executorService.shutdownNow();
             Thread.currentThread().interrupt();
         }
+
+        //store step count in database
+        new FitnessDataStoreTask().insertStepcount(mStepMap);
 
     }
 
