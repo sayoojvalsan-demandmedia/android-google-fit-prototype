@@ -1,0 +1,9 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.livestrong.GoogleFitGreenDaoGenerator"
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('lib/greendao-generator-2.1.0.jar')
+
+}

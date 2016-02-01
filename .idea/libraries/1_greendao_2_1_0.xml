@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1_greendao-2.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/googlefitmodule/libs/greendao-2.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
