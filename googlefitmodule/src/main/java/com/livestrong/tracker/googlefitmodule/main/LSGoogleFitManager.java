@@ -24,7 +24,7 @@ public class LSGoogleFitManager {
     private Context mcontext;
     private GoogleApiClient mClient;
     private LSGoogleFitConnectionListener mConnectionListener;
-    private LSGoogleFitDatabaseManager mdbmanager;
+    //private LSGoogleFitDatabaseManager mdbmanager;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
 
@@ -32,13 +32,14 @@ public class LSGoogleFitManager {
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
         this.mcontext = context.getApplicationContext();
         this.mConnectionListener = connectionListener;
-        mdbmanager = LSGoogleFitDatabaseManager.getinstance();
         buildFitnessClient(context);
+
     }
 
     public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener errorlistener) {
         if(slsGoogleFitManager == null){
             slsGoogleFitManager = new LSGoogleFitManager(context, errorlistener);
+
         }
         return slsGoogleFitManager;
     }
@@ -154,6 +155,10 @@ public class LSGoogleFitManager {
         }
         return slsGoogleFitManager;
     }
+
+    /*public void initializedb(){
+        mdbmanager = LSGoogleFitDatabaseManager.getinstance();
+    }*/
 
 }
 

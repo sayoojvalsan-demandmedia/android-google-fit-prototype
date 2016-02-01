@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitCardView;
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
 /**
  * Created by shambhavipunja on 1/25/16.
@@ -58,6 +59,9 @@ public class PageFragment extends Fragment {
         });
 
         return rootview;
+
+        //new LSGoogleFitCardView(getContext(),mPostion);
+
     }
 
     @Override

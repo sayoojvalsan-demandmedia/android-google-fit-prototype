@@ -26,7 +26,7 @@ public class FitnessDataStoreTask {
                 //Storing into list of FitnessData from Hashmap
                 FitnessData fit = new FitnessData();
                 fit.setDate(entry.getKey());
-                fit.setFitness_step_count(stepMap.get(entry.getValue()));
+                fit.setFitness_step_count(entry.getValue());
                 list.add(fit);
             }
             //insert in db
@@ -34,8 +34,10 @@ public class FitnessDataStoreTask {
 
             /* For Log purpose */
             List<FitnessData> dataList = LSGoogleFitDatabaseManager.getinstance().getAll();
-            for(FitnessData fit: dataList){
-                Log.i(TAG, fit.getId() + " " + fit.getDate() + " " + fit.getFitness_step_count() + " " + fit.getFitness_calorie_count() + " " + fit.getFItness_distance() + " " + fit.getFitness_time());
+            if(dataList != null) {
+                for (FitnessData fit : dataList) {
+                    Log.i(TAG, fit.getId() + " " + fit.getDate() + " " + fit.getFitness_step_count() + " " + fit.getFitness_calorie_count() + " " + fit.getFItness_distance() + " " + fit.getFitness_time());
+                }
             }
         }
     }

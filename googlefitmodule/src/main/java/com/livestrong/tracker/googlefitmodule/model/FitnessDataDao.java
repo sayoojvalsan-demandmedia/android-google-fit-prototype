@@ -45,7 +45,7 @@ public class FitnessDataDao extends AbstractDao<FitnessData, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"FITNESS_DATA\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"DATE\" INTEGER," + // 1: Date
+                "\"DATE\" INTEGER UNIQUE ," + // 1: Date
                 "\"FITNESS_STEP_COUNT\" INTEGER," + // 2: Fitness_step_count
                 "\"FITNESS_DISTANCE\" REAL," + // 3: FItness_distance
                 "\"FITNESS_CALORIE_COUNT\" REAL," + // 4: Fitness_calorie_count

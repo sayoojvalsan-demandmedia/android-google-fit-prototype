@@ -41,7 +41,7 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     @Override
     protected void onResume() {
         super.onResume();
-        LSGoogleFitManager.getLsGoogleFitManager().startLSGoogleFitService();
+        //LSGoogleFitManager.getLsGoogleFitManager().startLSGoogleFitService();
 
     }
 

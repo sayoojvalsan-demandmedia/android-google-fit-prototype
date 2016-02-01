@@ -53,8 +53,8 @@ public class LSGoogleFitService extends IntentService {
 
                         for (Map.Entry<Date,Integer> entry : steps.entrySet()) {
                             mStepMap.put(entry.getKey(), entry.getValue());
-//                            Log.i(TAG, dateFormat.format(entry.getKey()));
-//                            Log.i(TAG, entry.getValue().toString());
+                            Log.i(TAG, dateFormat.format(entry.getKey()));
+                            Log.i(TAG, entry.getValue().toString());
                         }
                     }
                 })

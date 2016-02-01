@@ -9,7 +9,7 @@ public class GoogleFitGreenDaoGenerator {
         Schema schema = new Schema(1, "com.livestrong.tracker.googlefitmodule.model");
         Entity fitnessData = schema.addEntity("FitnessData");
         fitnessData.addIdProperty();
-        fitnessData.addDateProperty("Date");
+        fitnessData.addDateProperty("Date").unique();
         fitnessData.addIntProperty("Fitness_step_count");
         fitnessData.addFloatProperty("FItness_distance");
         fitnessData.addFloatProperty("Fitness_calorie_count");

@@ -7,6 +7,7 @@ import com.livestrong.tracker.googlefitmodule.model.DaoSession;
 import com.livestrong.tracker.googlefitmodule.model.FitnessData;
 import com.livestrong.tracker.googlefitmodule.model.FitnessDataDao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class LSGoogleFitDatabaseManager {
     private DaoSession mdaoSession;
     private DaoMaster mdaoMaster;
     private FitnessDataDao mdao;
+    private List<GoogleFitObserver> mobservers = new ArrayList<GoogleFitObserver>();
+    private int mobserverState;
+
 
     private LSGoogleFitDatabaseManager(){
         String dbName = "FitnessData";
@@ -39,21 +43,40 @@ public class LSGoogleFitDatabaseManager {
 
     }
 
+    public void setState(int state) {
+        this.mobserverState = state;
+        notifyAllObservers();
+    }
+
+    public void attach(GoogleFitObserver observer){
+        mobservers.add(observer);
+    }
+
+    public void notifyAllObservers() {
+        for (GoogleFitObserver observer : mobservers) {
+            observer.onDatabaseUpdated();
+        }
+    }
+
     /**
      *
      * @param dataList:List of rows to insert.
      */
     public void insert(List<FitnessData> dataList){
         if(dataList.size()>0){
-            mdb.beginTransaction();
+            mdao.insertOrReplaceInTx(dataList);
+            /*mdb.beginTransaction();
             try{
                 for (FitnessData data:dataList) {
                     FitnessData oldRow = getRowByDate(data.getDate());
                     if(oldRow == null){
                         mdao.insert(data);
+
                     } else{
                         oldRow.setFitness_step_count(data.getFitness_step_count());
                         mdao.update(oldRow);
+                        mdao.updateInTx();
+
                     }
                 }
                 mdb.setTransactionSuccessful();
@@ -61,7 +84,7 @@ public class LSGoogleFitDatabaseManager {
                 ex.printStackTrace();
             } finally {
                 mdb.endTransaction();
-            }
+            }*/
         }
     }
 
