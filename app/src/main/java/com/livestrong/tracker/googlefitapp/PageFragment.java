@@ -1,13 +1,12 @@
 package com.livestrong.tracker.googlefitapp;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitCardView;
-import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
+import java.util.Calendar;
+import java.util.Locale;
 /**
  * Created by shambhavipunja on 1/25/16.
  */
@@ -18,21 +17,19 @@ import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
  * Use the {@link PageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "position";
-    // TODO: Rename and change types of parameters
+public class PageFragment extends ListFragment  {
+    private static final String PAGE_POSITION = "position";
     private int mPostion;
-
+    private ListAdapter<ListItem> mAdapter;
+    private Calendar mdate;
     public PageFragment() {
         // Required empty public constructor
     }
 
-    public static PageFragment newInstance(int param1) {
+    public static PageFragment newInstance(int position) {
         PageFragment fragment = new PageFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1,param1 );
+        args.putInt(PAGE_POSITION,position );
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,8 +38,12 @@ public class PageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPostion = getArguments().getInt(ARG_PARAM1);
+            mPostion = getArguments().getInt(PAGE_POSITION);
         }
+        mdate = Calendar.getInstance(Locale.US);
+        mdate.setTimeInMillis(getDateForPage(mPostion));
+        mAdapter = new ListAdapter<ListItem>(this,mdate);
+        setListAdapter(mAdapter);
     }
 
     @Override
@@ -50,23 +51,55 @@ public class PageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_page, container, false);
-        Button btn = (Button)rootview.findViewById(R.id.button);
+        /*Button btn = (Button)rootview.findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  LSGoogleFitManager.getLsGoogleFitManager().disconnectGoogleFit(getContext());
             }
-        });
+        });*/
 
         return rootview;
+    }
 
-        //new LSGoogleFitCardView(getContext(),mPostion);
+    public Long getDateForPage(int page)
+    {
+        page = MainActivity.TODAY_POSITION - page;
+        //Logger.d(TAG, "Days = " + page);
+        Calendar calendar = Calendar.getInstance(Locale.US);
+        calendar.add(Calendar.DATE, -page);
+
+        /*Calendar newCalender = Calendar.getInstance(Locale.US);
+        newCalender.setTimeInMillis(calendar.getTimeInMillis());*/
+        return calendar.getTimeInMillis();
+    }
+
+    /*@Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            LSGoogleFitManager.getLsGoogleFitManager().attach(this);
+        }
+        catch(ClassCastException e){
+            throw new ClassCastException(this.toString() + " Must implement GoogleFitObserver" );
+        }
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        LSGoogleFitManager.getLsGoogleFitManager().detach(this);
+       // mAdapter.getLsGoogleFitCardView().removeListener();
     }
+
+    @Override
+    public void onDatabaseUpdated() {
+        Log.i("********************", String.valueOf(mPostion));
+    }
+*/
+
+
+
 
 }

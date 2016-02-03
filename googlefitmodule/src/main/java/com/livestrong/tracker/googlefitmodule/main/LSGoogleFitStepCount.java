@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -103,8 +104,8 @@ public class LSGoogleFitStepCount implements Runnable {
         for (DataPoint dp : dataSet.getDataPoints()) {
 
             //get date and set to 12:00 am
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(dp.getStartTime(TimeUnit.MILLISECONDS));
+            Calendar cal = Calendar.getInstance(Locale.US);
+            cal.setTimeInMillis(CalenderTimeConvertor.getmInstance().getTimeMidnight(dp.getStartTime(TimeUnit.MILLISECONDS)));
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
@@ -145,7 +146,7 @@ public class LSGoogleFitStepCount implements Runnable {
      * @return The last sync date or the date 1 month back in millis.
      */
     private long getStartTime(){
-        Date lastSync = LSGoogleFitDatabaseManager.getinstance().getLastInsertDate();
+        Date lastSync = LSGoogleFitDatabaseConn.getinstance().getLastInsertDate();
         Log.i(TAG, "DATE***********: " + lastSync);
 
         if (lastSync != null) {
@@ -155,11 +156,12 @@ public class LSGoogleFitStepCount implements Runnable {
         else
         {
             //When database is empty
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 00);
-            cal.set(Calendar.MILLISECOND, 0);
+            Calendar cal = Calendar.getInstance(Locale.US);
+            cal.setTimeInMillis(CalenderTimeConvertor.getmInstance().getTimeMidnight(System.currentTimeMillis()));
+            //cal.set(Calendar.HOUR_OF_DAY, 0);
+            //cal.set(Calendar.MINUTE, 0);
+            //cal.set(Calendar.SECOND, 00);
+            //cal.set(Calendar.MILLISECOND, 0);
             cal.add(Calendar.DAY_OF_WEEK, -30); //retrieve data for the past 30 days.
             return cal.getTimeInMillis();
         }

@@ -7,25 +7,23 @@ import com.livestrong.tracker.googlefitmodule.model.DaoSession;
 import com.livestrong.tracker.googlefitmodule.model.FitnessData;
 import com.livestrong.tracker.googlefitmodule.model.FitnessDataDao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by shambhavipunja on 1/28/16.
  */
-public class LSGoogleFitDatabaseManager {
-    private static LSGoogleFitDatabaseManager slsGoogleFitDatabaseManager;
+public class LSGoogleFitDatabaseConn {
+    private static LSGoogleFitDatabaseConn slsGoogleFitDatabaseConn;
     private DaoMaster.DevOpenHelper mhelper;
     private SQLiteDatabase mdb;
     private DaoSession mdaoSession;
     private DaoMaster mdaoMaster;
     private FitnessDataDao mdao;
-    private List<GoogleFitObserver> mobservers = new ArrayList<GoogleFitObserver>();
-    private int mobserverState;
 
 
-    private LSGoogleFitDatabaseManager(){
+
+    private LSGoogleFitDatabaseConn(){
         String dbName = "FitnessData";
         //Start Session
         mhelper = new DaoMaster.DevOpenHelper(LSGoogleFitManager.getLsGoogleFitManager().getcontext(),dbName,null);
@@ -35,27 +33,12 @@ public class LSGoogleFitDatabaseManager {
         mdao = mdaoSession.getFitnessDataDao();
     }
 
-    public static synchronized LSGoogleFitDatabaseManager getinstance() {
-        if ( slsGoogleFitDatabaseManager == null ) {
-            slsGoogleFitDatabaseManager = new LSGoogleFitDatabaseManager();
+    public static synchronized LSGoogleFitDatabaseConn getinstance() {
+        if ( slsGoogleFitDatabaseConn == null ) {
+            slsGoogleFitDatabaseConn = new LSGoogleFitDatabaseConn();
         }
-        return slsGoogleFitDatabaseManager;
+        return slsGoogleFitDatabaseConn;
 
-    }
-
-    public void setState(int state) {
-        this.mobserverState = state;
-        notifyAllObservers();
-    }
-
-    public void attach(GoogleFitObserver observer){
-        mobservers.add(observer);
-    }
-
-    public void notifyAllObservers() {
-        for (GoogleFitObserver observer : mobservers) {
-            observer.onDatabaseUpdated();
-        }
     }
 
     /**

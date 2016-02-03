@@ -79,6 +79,10 @@ public class LSGoogleFitService extends IntentService {
         //store step count in database
         new FitnessDataStoreTask().insertStepcount(mStepMap);
 
+        Intent bintent = new Intent();
+        bintent.setAction(LSGoogleFitServiceReciever.ACTION_RESP);
+        sendBroadcast(bintent);
+
     }
 
 

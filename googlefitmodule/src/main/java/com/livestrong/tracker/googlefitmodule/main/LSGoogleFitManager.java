@@ -2,6 +2,7 @@ package com.livestrong.tracker.googlefitmodule.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +17,9 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by shambhavipunja on 1/25/16.
  */
@@ -24,7 +28,10 @@ public class LSGoogleFitManager {
     private Context mcontext;
     private GoogleApiClient mClient;
     private LSGoogleFitConnectionListener mConnectionListener;
-    //private LSGoogleFitDatabaseManager mdbmanager;
+    private LSGoogleFitServiceReciever mreciever;
+    private List<LSGoogleFitObserver> mobservers;
+    private int mobserverState;
+    public static final int LISTENER_SET = 1;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
 
@@ -32,6 +39,7 @@ public class LSGoogleFitManager {
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
         this.mcontext = context.getApplicationContext();
         this.mConnectionListener = connectionListener;
+        mobservers = new ArrayList<LSGoogleFitObserver>();
         buildFitnessClient(context);
 
     }
@@ -44,16 +52,12 @@ public class LSGoogleFitManager {
         return slsGoogleFitManager;
     }
 
-    /**
-     *
-     * @return
-     */
     public Context getcontext() {
         return mcontext;
     }
 
     /**
-     *
+     * Buil
      */
     public void buildFitnessClient(final Context context) {
         // Create the Google API Client
@@ -154,6 +158,44 @@ public class LSGoogleFitManager {
             throw new IllegalStateException("Not initialized");
         }
         return slsGoogleFitManager;
+    }
+
+    public void setState(int state) {
+        this.mobserverState = state;
+        notifyAllObservers();
+    }
+
+    public void attach(LSGoogleFitObserver observer){
+        mobservers.add(observer);
+        notifyObserver(observer);
+    }
+
+    public void detach(LSGoogleFitObserver observer){
+        mobservers.remove(observer);
+    }
+
+    private void notifyAllObservers() {
+        if(this.mobserverState == LISTENER_SET) {
+            for (LSGoogleFitObserver observer : mobservers) {
+                observer.onDatabaseUpdated();
+            }
+        }
+    }
+
+    private void notifyObserver(LSGoogleFitObserver observer) {
+        if(this.mobserverState == LISTENER_SET) {
+                observer.onDatabaseUpdated();
+        }
+    }
+
+    public void registerLSReciever(String action){
+        IntentFilter filter = new IntentFilter(action);
+        mreciever = new LSGoogleFitServiceReciever();
+        mcontext.registerReceiver(mreciever,filter);
+    }
+
+    public void unregisterLSReciever(){
+        mcontext.unregisterReceiver(mreciever);
     }
 
     /*public void initializedb(){

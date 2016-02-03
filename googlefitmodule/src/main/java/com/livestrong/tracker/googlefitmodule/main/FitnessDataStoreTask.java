@@ -30,10 +30,11 @@ public class FitnessDataStoreTask {
                 list.add(fit);
             }
             //insert in db
-            LSGoogleFitDatabaseManager.getinstance().insert(list);
+            LSGoogleFitDatabaseConn.getinstance().insert(list);
+
 
             /* For Log purpose */
-            List<FitnessData> dataList = LSGoogleFitDatabaseManager.getinstance().getAll();
+            List<FitnessData> dataList = LSGoogleFitDatabaseConn.getinstance().getAll();
             if(dataList != null) {
                 for (FitnessData fit : dataList) {
                     Log.i(TAG, fit.getId() + " " + fit.getDate() + " " + fit.getFitness_step_count() + " " + fit.getFitness_calorie_count() + " " + fit.getFItness_distance() + " " + fit.getFitness_time());

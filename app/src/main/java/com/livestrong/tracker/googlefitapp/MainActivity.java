@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitConnectionListener;
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
+import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitServiceReciever;
 
 /**
  * Created by shambhavipunja on 1/25/16.
@@ -19,7 +20,9 @@ import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
 public class MainActivity extends FragmentActivity implements LSGoogleFitConnectionListener {
     private PagerAdapter mPageAdapter;
     private ViewPager mViewPager;
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 30;
+    public static final int TODAY_POSITION = NUM_PAGES / 2 ;
+    public static final int OFF_SCREEN_PAGE = 1;
 
 
     @Override
@@ -28,27 +31,27 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
         setContentView(R.layout.activity_main);
 
         LSGoogleFitManager.initialize(this, this);
+        LSGoogleFitManager.getLsGoogleFitManager().registerLSReciever(LSGoogleFitServiceReciever.ACTION_RESP);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mPageAdapter =  new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPageAdapter);
-        mViewPager.setCurrentItem(NUM_PAGES / 2);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setCurrentItem(TODAY_POSITION);
+        mViewPager.setOffscreenPageLimit(OFF_SCREEN_PAGE);
 
 
 
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //LSGoogleFitManager.getLsGoogleFitManager().startLSGoogleFitService();
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
-
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        LSGoogleFitManager.getLsGoogleFitManager().unregisterLSReciever();
+        super.onDestroy();
     }
 
     @Override
@@ -79,7 +82,7 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     }
 
     @Override
-    public void SubscribeStatus(String subscribeSt) {
+    public void SubscribeStatus(String subscribeStatus) {
 
     }
 

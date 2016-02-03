@@ -5,7 +5,18 @@
     tools:context="com.livestrong.tracker.googlefitapp.PageFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animationCache="false"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:scrollingCache="false" />
+
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
@@ -15,6 +26,6 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button"
-        android:layout_gravity="center" />
+        android:layout_gravity="center" />-->
 
 </FrameLayout>
