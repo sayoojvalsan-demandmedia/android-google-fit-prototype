@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
+import com.livestrong.tracker.googlefitmodule.Interfaces.LSGoogleFitConnectionListener;
+import com.livestrong.tracker.googlefitmodule.Interfaces.LSGoogleFitObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,40 +26,39 @@ import java.util.List;
  * Created by shambhavipunja on 1/25/16.
  */
 public class LSGoogleFitManager {
-    private static LSGoogleFitManager slsGoogleFitManager;
-    private Context mcontext;
+    private static LSGoogleFitManager sLsGoogleFitManager;
+    private Context mContext;
     private GoogleApiClient mClient;
     private LSGoogleFitConnectionListener mConnectionListener;
-    private LSGoogleFitServiceReciever mreciever;
-    private List<LSGoogleFitObserver> mobservers;
-    private int mobserverState;
+    private LSGoogleFitServiceReciever mReciever;
+    private List<LSGoogleFitObserver> mObservers;
+    private int mObserverState;
     public static final int LISTENER_SET = 1;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
-
+    public static final String FIT_NETWORK_LOST = "Network Lost";
+    public static final String FIT_CONNECTED = "Connected";
+    public static final String FIT_DISCONNECTED = "Service Disconnected";
+    public static final String MANAGER_NULL ="Manager not initialized";
 
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
-        this.mcontext = context.getApplicationContext();
+        this.mContext = context.getApplicationContext();
         this.mConnectionListener = connectionListener;
-        mobservers = new ArrayList<LSGoogleFitObserver>();
+        mObservers = new ArrayList<LSGoogleFitObserver>();
         buildFitnessClient(context);
 
     }
 
-    public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener errorlistener) {
-        if(slsGoogleFitManager == null){
-            slsGoogleFitManager = new LSGoogleFitManager(context, errorlistener);
+    public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener connectionListener) {
+        if(sLsGoogleFitManager == null){
+            sLsGoogleFitManager = new LSGoogleFitManager(context, connectionListener);
 
         }
-        return slsGoogleFitManager;
-    }
-
-    public Context getcontext() {
-        return mcontext;
+        return sLsGoogleFitManager;
     }
 
     /**
-     * Buil
+     * Method to build fitness client, instantiate class for recording fitness data and start service.
      */
     public void buildFitnessClient(final Context context) {
         // Create the Google API Client
@@ -72,12 +73,12 @@ public class LSGoogleFitManager {
                             @Override
                             public void onConnected(Bundle bundle) {
                                 Log.i(TAG, "Connected!!!");
-                                notifyConnectionStatus("Connected");
+                                notifyConnectionStatus(FIT_CONNECTED);
 
                                 // Subscribe to some data sources!
                                 new LSGoogleFitRecord().subscribe(mClient);
                                 startLSGoogleFitService();
-                                //resultcode = LSGoogleFitManager.AUTH_SUCCESS;
+
                             }
 
                             @Override
@@ -85,10 +86,10 @@ public class LSGoogleFitManager {
                                 // If your connection to the sensor gets lost at some point,
                                 // you'll be able to determine the reason and react to it here.
                                 if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                                    notifyConnectionStatus("Network Lost");
+                                    notifyConnectionStatus(FIT_NETWORK_LOST);
                                     Log.i(TAG, "******************Connection lost.  Cause: Network Lost.");
                                 } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                                    notifyConnectionStatus("Service Disconnected");
+                                    notifyConnectionStatus(FIT_DISCONNECTED);
                                     Log.i(TAG, "******************Connection lost.  Reason: Service Disconnected");
                                 }
                             }
@@ -102,7 +103,7 @@ public class LSGoogleFitManager {
                                 result.getErrorCode() + result.getErrorMessage() + result.toString());
 
                         notifyConnectionStatus(result.toString());
-                        Toast.makeText(context, "failed", Toast.LENGTH_LONG).show();
+
 
                     }
                 })
@@ -133,20 +134,24 @@ public class LSGoogleFitManager {
         });
     }
 
+    public Context getContext(){
+        return mContext;
+    }
+
     public void startLSGoogleFitService(){
-        Intent intent = new Intent(mcontext, LSGoogleFitService.class);
+        Intent intent = new Intent(mContext, LSGoogleFitService.class);
         intent.setAction(GET_HISTORY);
-        mcontext.startService(intent);
+        mContext.startService(intent);
 
     }
     void notifyConnectionStatus(String status){
         if (mConnectionListener != null){
-            mConnectionListener.ConnectionStatus(status);
+            mConnectionListener.connectionStatus(status);
         }
     }
     void notifySubscribeStatus(String status){
         if (mConnectionListener != null){
-            mConnectionListener.SubscribeStatus(status);
+            mConnectionListener.subscribeStatus(status);
         }
     }
     public GoogleApiClient getClient() {
@@ -154,53 +159,50 @@ public class LSGoogleFitManager {
     }
 
     public static LSGoogleFitManager getLsGoogleFitManager() {
-        if(slsGoogleFitManager == null){
-            throw new IllegalStateException("Not initialized");
+        if(sLsGoogleFitManager == null){
+            throw new IllegalStateException(MANAGER_NULL);
         }
-        return slsGoogleFitManager;
+        return sLsGoogleFitManager;
     }
 
     public void setState(int state) {
-        this.mobserverState = state;
+        this.mObserverState = state;
         notifyAllObservers();
     }
 
     public void attach(LSGoogleFitObserver observer){
-        mobservers.add(observer);
+        mObservers.add(observer);
         notifyObserver(observer);
     }
 
     public void detach(LSGoogleFitObserver observer){
-        mobservers.remove(observer);
+        mObservers.remove(observer);
     }
 
     private void notifyAllObservers() {
-        if(this.mobserverState == LISTENER_SET) {
-            for (LSGoogleFitObserver observer : mobservers) {
+        if(this.mObserverState == LISTENER_SET) {
+            for (LSGoogleFitObserver observer : mObservers) {
                 observer.onDatabaseUpdated();
             }
         }
     }
 
     private void notifyObserver(LSGoogleFitObserver observer) {
-        if(this.mobserverState == LISTENER_SET) {
+        if(this.mObserverState == LISTENER_SET) {
                 observer.onDatabaseUpdated();
         }
     }
 
     public void registerLSReciever(String action){
         IntentFilter filter = new IntentFilter(action);
-        mreciever = new LSGoogleFitServiceReciever();
-        mcontext.registerReceiver(mreciever,filter);
+        mReciever = new LSGoogleFitServiceReciever();
+        mContext.registerReceiver(mReciever, filter);
     }
 
     public void unregisterLSReciever(){
-        mcontext.unregisterReceiver(mreciever);
+        mContext.unregisterReceiver(mReciever);
     }
 
-    /*public void initializedb(){
-        mdbmanager = LSGoogleFitDatabaseManager.getinstance();
-    }*/
 
 }
 

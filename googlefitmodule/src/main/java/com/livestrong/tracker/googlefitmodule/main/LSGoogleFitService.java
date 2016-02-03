@@ -2,12 +2,18 @@ package com.livestrong.tracker.googlefitmodule.main;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.livestrong.tracker.googlefitmodule.Interfaces.StepCountListener;
+import com.livestrong.tracker.googlefitmodule.Tasks.FitnessDataStoreTask;
+
 import java.text.SimpleDateFormat;;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,15 +22,15 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by shambhavipunja on 1/26/16.
  */
-public class LSGoogleFitService extends IntentService {
+public class LSGoogleFitService extends IntentService implements StepCountListener {
     public static final String TAG = "Service";
-    private HashMap<Date,Integer> mStepMap;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+    private Map<Date, Integer> mStepMap;
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
 
 
-    public LSGoogleFitService(){
+    public LSGoogleFitService() {
         super("Service");
-        mStepMap =  new HashMap<Date, Integer>();
+        mStepMap = new HashMap<>();
     }
 
     @Override
@@ -45,25 +51,12 @@ public class LSGoogleFitService extends IntentService {
                         new ThreadPoolExecutor.CallerRunsPolicy());
 
 
-
-        executorService.execute(new LSGoogleFitStepCount(new StepCountListener() {
-                    @Override
-                    public void stepCountRetrieved(HashMap<Date, Integer> steps) {
-                        Log.i(TAG, "steps received");
-
-                        for (Map.Entry<Date,Integer> entry : steps.entrySet()) {
-                            mStepMap.put(entry.getKey(), entry.getValue());
-                            Log.i(TAG, dateFormat.format(entry.getKey()));
-                            Log.i(TAG, entry.getValue().toString());
-                        }
-                    }
-                })
-        );
-
+        //start step count thread
+        executorService.execute(new LSGoogleFitStepCount(this));
         executorService.shutdown();
 
         try {
-                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
                 // pool didn't terminate after the first try
                 executorService.shutdownNow();
             }
@@ -77,14 +70,26 @@ public class LSGoogleFitService extends IntentService {
         }
 
         //store step count in database
-        new FitnessDataStoreTask().insertStepcount(mStepMap);
+        FitnessDataStoreTask.getInstance().insertStepcount(mStepMap);
 
+        //send broadcast
         Intent bintent = new Intent();
         bintent.setAction(LSGoogleFitServiceReciever.ACTION_RESP);
         sendBroadcast(bintent);
 
     }
 
+    @Override
+    public void stepCountRetrieved(Map<Date, Integer> step_map) {
+        Log.i(TAG, "steps received");
 
+        for (Map.Entry<Date, Integer> entry : step_map.entrySet()) {
+            mStepMap.put(entry.getKey(), entry.getValue());
+
+            Log.i(TAG, mDateFormat.format(entry.getKey()));
+            Log.i(TAG, entry.getValue().toString());
+        }
+    }
 }
+
 

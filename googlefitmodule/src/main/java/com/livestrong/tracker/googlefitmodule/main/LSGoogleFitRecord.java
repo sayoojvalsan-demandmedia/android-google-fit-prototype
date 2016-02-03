@@ -14,16 +14,19 @@ import com.google.android.gms.fitness.data.DataType;
  */
 public class LSGoogleFitRecord {
     public static final String TAG = "FitnessRecord";
+    public static final String SUBSCRIBE_SUCCESS = "Subcription Successfull";
+    public static final String SUBSCRIBE_NOT_SUCCESS = "Subcription not successfull";
+
     public LSGoogleFitRecord(){
     }
 
-    public void subscribe(GoogleApiClient mClient){
-        Fitness.RecordingApi.subscribe(mClient, DataType.TYPE_STEP_COUNT_DELTA)
+    public void subscribe(GoogleApiClient client){
+        Fitness.RecordingApi.subscribe(client, DataType.TYPE_STEP_COUNT_DELTA)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
                         if (status.isSuccess()) {
-                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus("Success");
+                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus(SUBSCRIBE_SUCCESS);
                             if (status.getStatusCode()
                                     == FitnessStatusCodes.SUCCESS_ALREADY_SUBSCRIBED) {
                                 Log.i(TAG, "Existing subscription for activity detected.");
@@ -31,19 +34,19 @@ public class LSGoogleFitRecord {
                                 Log.i(TAG, "Successfully subscribed!");
                             }
                         } else {
-                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus("Not Success");
+                            LSGoogleFitManager.getLsGoogleFitManager().notifySubscribeStatus(SUBSCRIBE_NOT_SUCCESS);
                             Log.i(TAG, "There was a problem subscribing.");
                         }
                     }
                 });
     }
 
-    public void cancelSubscription(GoogleApiClient mClient) {
+    public void cancelSubscription(GoogleApiClient client) {
         final String dataTypeStr = DataType.TYPE_STEP_COUNT_DELTA.toString();
         Log.i(TAG, "Unsubscribing from data type: " + dataTypeStr);
 
         // [START unsubscribe_from_datatype]
-        Fitness.RecordingApi.unsubscribe(mClient, DataType.TYPE_STEP_COUNT_DELTA)
+        Fitness.RecordingApi.unsubscribe(client, DataType.TYPE_STEP_COUNT_DELTA)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {

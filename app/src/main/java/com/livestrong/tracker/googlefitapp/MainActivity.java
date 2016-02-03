@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitConnectionListener;
+import com.livestrong.tracker.googlefitmodule.Interfaces.LSGoogleFitConnectionListener;
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitServiceReciever;
 
@@ -77,12 +77,12 @@ public class MainActivity extends FragmentActivity implements LSGoogleFitConnect
     }
 
     @Override
-    public void ConnectionStatus(String connectionStatus) {
+    public void connectionStatus(String connectionStatus) {
 
     }
 
     @Override
-    public void SubscribeStatus(String subscribeStatus) {
+    public void subscribeStatus(String subscribeStatus) {
 
     }
 
