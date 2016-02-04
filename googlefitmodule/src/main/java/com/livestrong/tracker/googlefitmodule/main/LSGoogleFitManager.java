@@ -41,17 +41,17 @@ public class LSGoogleFitManager {
     public static final String FIT_DISCONNECTED = "Service Disconnected";
     public static final String MANAGER_NULL ="Manager not initialized";
 
-    private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener connectionListener){
+    private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener lsGoogleFitConnectionListener){
         this.mContext = context.getApplicationContext();
-        this.mConnectionListener = connectionListener;
+        this.mConnectionListener = lsGoogleFitConnectionListener;
         mObservers = new ArrayList<LSGoogleFitObserver>();
         buildFitnessClient(context);
 
     }
 
-    public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener connectionListener) {
+    public static synchronized LSGoogleFitManager initialize(Context context, LSGoogleFitConnectionListener lsGoogleFitConnectionListener) {
         if(sLsGoogleFitManager == null){
-            sLsGoogleFitManager = new LSGoogleFitManager(context, connectionListener);
+            sLsGoogleFitManager = new LSGoogleFitManager(context, lsGoogleFitConnectionListener);
 
         }
         return sLsGoogleFitManager;

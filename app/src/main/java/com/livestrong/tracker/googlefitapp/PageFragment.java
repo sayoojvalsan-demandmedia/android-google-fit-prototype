@@ -20,8 +20,9 @@ import java.util.Locale;
 public class PageFragment extends ListFragment  {
     private static final String PAGE_POSITION = "position";
     private int mPostion;
+    private Calendar mcalendar;
     private ListAdapter<ListItem> mAdapter;
-    private Calendar mdate;
+
     public PageFragment() {
         // Required empty public constructor
     }
@@ -40,66 +41,27 @@ public class PageFragment extends ListFragment  {
         if (getArguments() != null) {
             mPostion = getArguments().getInt(PAGE_POSITION);
         }
-        mdate = Calendar.getInstance(Locale.US);
-        mdate.setTimeInMillis(getDateForPage(mPostion));
-        mAdapter = new ListAdapter<ListItem>(this,mdate);
+        mcalendar = Calendar.getInstance(Locale.US);
+        mcalendar.setTimeInMillis(getMillisForPage(mPostion));
+        mAdapter = new ListAdapter<ListItem>(this, mcalendar);
         setListAdapter(mAdapter);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_page, container, false);
-        /*Button btn = (Button)rootview.findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 LSGoogleFitManager.getLsGoogleFitManager().disconnectGoogleFit(getContext());
-            }
-        });*/
-
         return rootview;
     }
 
-    public Long getDateForPage(int page)
+    public Long getMillisForPage(int page)
     {
         page = MainActivity.TODAY_POSITION - page;
-        //Logger.d(TAG, "Days = " + page);
         Calendar calendar = Calendar.getInstance(Locale.US);
         calendar.add(Calendar.DATE, -page);
-
-        /*Calendar newCalender = Calendar.getInstance(Locale.US);
-        newCalender.setTimeInMillis(calendar.getTimeInMillis());*/
         return calendar.getTimeInMillis();
     }
-
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try{
-            LSGoogleFitManager.getLsGoogleFitManager().attach(this);
-        }
-        catch(ClassCastException e){
-            throw new ClassCastException(this.toString() + " Must implement GoogleFitObserver" );
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        LSGoogleFitManager.getLsGoogleFitManager().detach(this);
-       // mAdapter.getLsGoogleFitCardView().removeListener();
-    }
-
-    @Override
-    public void onDatabaseUpdated() {
-        Log.i("********************", String.valueOf(mPostion));
-    }
-*/
-
-
-
 
 }

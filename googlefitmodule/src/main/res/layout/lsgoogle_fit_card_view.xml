@@ -1,31 +1,56 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/SummaryCardContainer">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        card_view:cardCornerRadius="4dp">
+        style="@style/SummaryCard"
+        android:layout_height="233dp">
 
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_width="wrap_content"
-            android:layout_height="202dp"
-            android:layout_gravity="center_horizontal|top" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text2"
-            android:layout_gravity="left|bottom"
-            />
+             >
 
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="203dp"
+                android:layout_height="68dp"
+                android:text="@string/fit_card_title"
+                style="@style/SummaryCardTitle"
+                android:layout_gravity="left|top" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2" >
+
+                    <RelativeLayout
+                    android:layout_weight="1.2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical" >
+
+                        <TextView
+                        android:id="@+id/tvfitnessdata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.2"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/galaxy_blue"
+                        android:paddingLeft="16dp"
+                        android:textSize="30sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
     </android.support.v7.widget.CardView>
-
 
 
 

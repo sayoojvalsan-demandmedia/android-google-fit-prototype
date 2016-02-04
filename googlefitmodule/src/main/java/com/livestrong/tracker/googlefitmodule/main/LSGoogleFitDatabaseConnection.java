@@ -2,10 +2,10 @@ package com.livestrong.tracker.googlefitmodule.main;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.livestrong.tracker.googlefitmodule.model.DaoMaster;
-import com.livestrong.tracker.googlefitmodule.model.DaoSession;
-import com.livestrong.tracker.googlefitmodule.model.FitnessData;
-import com.livestrong.tracker.googlefitmodule.model.FitnessDataDao;
+import com.livestrong.tracker.googlefitmodule.greendao.DaoMaster;
+import com.livestrong.tracker.googlefitmodule.greendao.DaoSession;
+import com.livestrong.tracker.googlefitmodule.greendao.FitnessData;
+import com.livestrong.tracker.googlefitmodule.greendao.FitnessDataDao;
 
 import java.util.Date;
 import java.util.List;

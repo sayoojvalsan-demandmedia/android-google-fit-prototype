@@ -6,7 +6,7 @@ import de.greenrobot.daogenerator.DaoGenerator;
 
 public class GoogleFitGreenDaoGenerator {
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(1, "com.livestrong.tracker.googlefitmodule.model");
+        Schema schema = new Schema(1, "com.livestrong.tracker.googlefitmodule.greendao");
         Entity fitnessData = schema.addEntity("FitnessData");
         fitnessData.addIdProperty();
         fitnessData.addDateProperty("Date").unique();

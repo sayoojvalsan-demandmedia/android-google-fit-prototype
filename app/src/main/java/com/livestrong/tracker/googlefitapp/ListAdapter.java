@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitCardView;
+import com.livestrong.tracker.googlefitmodule.views.LSGoogleFitCardView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,11 +17,11 @@ import java.util.Calendar;
 public class ListAdapter<ListItem> extends BaseAdapter {
     private PageFragment mContext;
     private ArrayList<Integer> viewIndex = new ArrayList<Integer>();
-    private Calendar mdate;
+    private Calendar mDate;
     public static final int LS_GOOGLE_FIT_CARD = 0;
     public ListAdapter(PageFragment context,Calendar date){
         mContext = context;
-        mdate = date;
+        mDate = date;
         viewIndex.add(0);
     }
     @Override
@@ -57,9 +57,9 @@ public class ListAdapter<ListItem> extends BaseAdapter {
             LayoutInflater inflater = mContext.getActivity().getLayoutInflater();
             switch (viewType) {
                 case LS_GOOGLE_FIT_CARD:
-                     LSGoogleFitCardView lsGoogleFitCardView = new LSGoogleFitCardView(inflater.getContext(),mdate);
-                    rowView = lsGoogleFitCardView;
-                    break;
+                     LSGoogleFitCardView lsGoogleFitCardView = new LSGoogleFitCardView(inflater.getContext(), mDate);
+                     rowView = lsGoogleFitCardView;
+                     break;
             }
         }
         return  rowView;

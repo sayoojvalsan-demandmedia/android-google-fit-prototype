@@ -92,8 +92,6 @@
     <orderEntry type="library" exported="" name="play-services-wearable-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-location-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appindexing-8.4.0" level="project" />
-    <orderEntry type="library" exported="" name="joda-time-2.4" level="project" />
-    <orderEntry type="library" exported="" name="1_joda-time-2.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-drive-8.4.0" level="project" />

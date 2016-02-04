@@ -2,18 +2,15 @@ package com.livestrong.tracker.googlefitmodule.main;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.livestrong.tracker.googlefitmodule.Interfaces.StepCountListener;
 import com.livestrong.tracker.googlefitmodule.Tasks.FitnessDataStoreTask;
 
 import java.text.SimpleDateFormat;;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;

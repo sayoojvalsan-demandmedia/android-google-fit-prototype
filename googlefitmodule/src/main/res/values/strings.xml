@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GoogleFitModule</string>
+    <string name="fit_card_title">Google Fit </string>
 </resources>
