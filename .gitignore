@@ -2,8 +2,6 @@
 # Built application files
 *.apk
 *.ap_
-*.jar
-!gradle/wrapper/gradle-wrapper.jar
 
 # lint folder
 lint
