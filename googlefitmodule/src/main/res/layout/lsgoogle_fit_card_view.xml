@@ -8,7 +8,8 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         style="@style/SummaryCard"
-        android:layout_height="233dp">
+        android:layout_height="233dp"
+        android:layout_gravity="center_horizontal|top">
 
         <LinearLayout
             android:orientation="vertical"
@@ -46,12 +47,11 @@
                         android:gravity="start|center_vertical"
                         android:textColor="@color/galaxy_blue"
                         android:paddingLeft="16dp"
-                        android:textSize="30sp" />
+                        android:textSize="25dp" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
     </android.support.v7.widget.CardView>
-
 
 
 </FrameLayout>

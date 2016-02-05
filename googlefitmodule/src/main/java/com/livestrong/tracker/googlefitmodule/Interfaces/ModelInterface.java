@@ -6,6 +6,6 @@ import java.util.Date;
 /**
  * Created by shambhavipunja on 2/4/16.
  */
-public interface CardModelInterface {
+public interface ModelInterface {
     public void getDataForDate(Date date, OnCardDataReady onCardDataReady);
 }

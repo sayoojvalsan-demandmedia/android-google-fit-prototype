@@ -1,12 +1,13 @@
 package com.livestrong.tracker.googlefitmodule.presenters;
 
+import com.livestrong.tracker.googlefitmodule.Tasks.TimeConvertorTask;
 import com.livestrong.tracker.googlefitmodule.greendao.FitnessData;
-import com.livestrong.tracker.googlefitmodule.Interfaces.CardModelInterface;
+import com.livestrong.tracker.googlefitmodule.Interfaces.ModelInterface;
 import com.livestrong.tracker.googlefitmodule.Interfaces.CardPresenterInterface;
 import com.livestrong.tracker.googlefitmodule.Interfaces.LSGoogleFitObserver;
 import com.livestrong.tracker.googlefitmodule.Interfaces.OnCardDataReady;
 import com.livestrong.tracker.googlefitmodule.main.LSGoogleFitManager;
-import com.livestrong.tracker.googlefitmodule.models.CardModel;
+import com.livestrong.tracker.googlefitmodule.models.GoogleFitModel;
 import com.livestrong.tracker.googlefitmodule.views.LSGoogleFitCardView;
 
 import java.text.SimpleDateFormat;
@@ -20,11 +21,14 @@ public class CardPresenter implements CardPresenterInterface,LSGoogleFitObserver
 
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
     private LSGoogleFitCardView mLsGoogleFitCardView;
-    private CardModelInterface modelInterface;
+    private ModelInterface modelInterface;
     private Date mDate;
+    public static final String NO_DATA = "0";
+    public static final String STEPS = " steps";
+
     public CardPresenter( LSGoogleFitCardView lsGoogleFitCardView){
         mLsGoogleFitCardView = lsGoogleFitCardView;
-        modelInterface = new CardModel();
+        modelInterface = new GoogleFitModel();
         mDate = new Date();
     }
 
@@ -40,7 +44,7 @@ public class CardPresenter implements CardPresenterInterface,LSGoogleFitObserver
 
     @Override
     public void setDate(Calendar date) {
-        mDate.setTime(date.getTimeInMillis());
+        mDate.setTime(TimeConvertorTask.getmInstance().getTimeMidnight(date.getTimeInMillis()));
     }
 
     @Override
@@ -51,6 +55,10 @@ public class CardPresenter implements CardPresenterInterface,LSGoogleFitObserver
 
     @Override
     public void setFitnessData(FitnessData fitnessData) {
-        mLsGoogleFitCardView.setFitnessText(mDateFormat.format(fitnessData.getDate()));
+        if (fitnessData == null) {
+            mLsGoogleFitCardView.setFitnessText(NO_DATA + STEPS);
+        }else {
+            mLsGoogleFitCardView.setFitnessText(fitnessData.getFitness_step_count().toString() + STEPS);
+        }
     }
 }
