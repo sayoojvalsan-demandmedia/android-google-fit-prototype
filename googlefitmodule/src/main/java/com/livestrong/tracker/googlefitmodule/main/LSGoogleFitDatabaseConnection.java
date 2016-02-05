@@ -16,7 +16,7 @@ import java.util.List;
 public class LSGoogleFitDatabaseConnection {
     private static LSGoogleFitDatabaseConnection sLsGoogleFitDatabaseConnection;
     private DaoMaster.DevOpenHelper mHelper;
-    private SQLiteDatabase mdb;
+    private SQLiteDatabase mDb;
     private DaoSession mDaoSession;
     private DaoMaster mDaoMaster;
     private FitnessDataDao mDao;
@@ -25,11 +25,10 @@ public class LSGoogleFitDatabaseConnection {
 
 
     private LSGoogleFitDatabaseConnection(){
-
         //Start Session
         mHelper = new DaoMaster.DevOpenHelper(LSGoogleFitManager.getLsGoogleFitManager().getContext(), DATABASE_NAME, null);
-        mdb = mHelper.getWritableDatabase();
-        mDaoMaster = new DaoMaster(mdb);
+        mDb = mHelper.getWritableDatabase();
+        mDaoMaster = new DaoMaster(mDb);
         mDaoSession = mDaoMaster.newSession();
         mDao = mDaoSession.getFitnessDataDao();
     }

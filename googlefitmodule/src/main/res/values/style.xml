@@ -23,5 +23,14 @@
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">@dimen/card_title</item>
     </style>
+    <style name="SummaryCardIcon">
+        <item name="android:src">@drawable/ic_directions_walk_24dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:gravity">bottom</item>
+    </style>
+    <style name="Divider">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+    </style>
 
 </resources>

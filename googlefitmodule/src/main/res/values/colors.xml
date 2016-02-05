@@ -2,5 +2,8 @@
 <resources>
     <color name="grey">#9b9b9b</color>
     <color name="galaxy_blue">#34495E</color>
+    <color name="blue_color">#2196F3</color>
+    <color name="grey_chart">#99cdcdcd</color>
+    <color name="fit_color">#FFD34B23</color>
 
 </resources>

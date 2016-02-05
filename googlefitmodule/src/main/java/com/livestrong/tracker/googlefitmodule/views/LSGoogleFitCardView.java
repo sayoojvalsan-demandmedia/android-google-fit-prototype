@@ -18,8 +18,9 @@ import java.util.Calendar;
  */
 public class LSGoogleFitCardView extends FrameLayout implements CardViewInterface {
 
-    private TextView fitnessData;
-    private CardPresenterInterface cardPresenterInterface;
+    private TextView mFitnessData, mSuffix;
+    //private ProgressBar mSpinner;
+    private CardPresenterInterface mCardPresenterInterface;
 
     public LSGoogleFitCardView(Context context, Calendar date){
         this(context, null, date);
@@ -37,27 +38,35 @@ public class LSGoogleFitCardView extends FrameLayout implements CardViewInterfac
     private void init(Context context, Calendar date) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.lsgoogle_fit_card_view, this);
-        fitnessData = (TextView) findViewById(R.id.tvfitnessdata);
-        cardPresenterInterface = new CardPresenter(this);
-        cardPresenterInterface.setDate(date);
+        mFitnessData = (TextView) findViewById(R.id.text_data);
+        mSuffix = (TextView) findViewById(R.id.text_suffix);
+       // mSpinner = (ProgressBar) findViewById(R.id.progressBar1);
+        //mSpinner.setVisibility(View.VISIBLE);
+        mCardPresenterInterface = new CardPresenter(this);
+        mCardPresenterInterface.setDate(date);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        cardPresenterInterface.onAttachedToWindow();
+        mCardPresenterInterface.onAttachedToWindow();
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        cardPresenterInterface.onDetachToWindow();
+        mCardPresenterInterface.onDetachToWindow();
         super.onDetachedFromWindow();
     }
 
     @Override
-    public void setFitnessText(String text) {
-        fitnessData.setText(text);
+    public void setFitnessText(String text, String suffix) {
+       // mSpinner.setVisibility(View.GONE);
+        mFitnessData.setText(text);
+        mSuffix.setText(suffix);
     }
+
+
+
 }
 
 

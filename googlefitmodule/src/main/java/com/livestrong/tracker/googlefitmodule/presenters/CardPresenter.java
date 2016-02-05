@@ -19,7 +19,6 @@ import java.util.Date;
  */
 public class CardPresenter implements CardPresenterInterface,LSGoogleFitObserver,OnCardDataReady{
 
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
     private LSGoogleFitCardView mLsGoogleFitCardView;
     private ModelInterface modelInterface;
     private Date mDate;
@@ -56,9 +55,9 @@ public class CardPresenter implements CardPresenterInterface,LSGoogleFitObserver
     @Override
     public void setFitnessData(FitnessData fitnessData) {
         if (fitnessData == null) {
-            mLsGoogleFitCardView.setFitnessText(NO_DATA + STEPS);
+            mLsGoogleFitCardView.setFitnessText(NO_DATA, STEPS);
         }else {
-            mLsGoogleFitCardView.setFitnessText(fitnessData.getFitness_step_count().toString() + STEPS);
+            mLsGoogleFitCardView.setFitnessText(fitnessData.getFitness_step_count().toString(), STEPS);
         }
     }
 }
