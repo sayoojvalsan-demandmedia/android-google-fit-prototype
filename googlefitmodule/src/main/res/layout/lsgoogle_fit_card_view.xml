@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/galaxy_blue"
                     android:paddingLeft="16dp"
+                    android:paddingBottom="18dp"
                     android:textSize="40sp"
                     android:layout_gravity="center_vertical" />
 
@@ -45,10 +46,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/galaxy_blue"
-                    android:paddingLeft="8dp"
+                    android:paddingLeft="6dp"
                     android:textSize="20sp"
                     android:gravity="bottom"
-                    android:paddingBottom="2dp"
                     android:layout_weight="2"
                     android:layout_gravity="center_vertical" />
 
