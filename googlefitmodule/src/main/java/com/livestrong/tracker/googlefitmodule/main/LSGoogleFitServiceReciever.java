@@ -14,7 +14,9 @@ public class LSGoogleFitServiceReciever extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if(intent.getAction().equals(ACTION_RESP)) {
-            LSGoogleFitManager.getLsGoogleFitManager().setState(LSGoogleFitManager.LISTENER_SET);
+            LSGoogleFitManager manager = LSGoogleFitManager.getLsGoogleFitManager();
+            manager.setmFlagService(LSGoogleFitManager.SERVICE_STOPPED);
+            manager.setState(LSGoogleFitManager.LISTENER_SET);
         }
     }
 }

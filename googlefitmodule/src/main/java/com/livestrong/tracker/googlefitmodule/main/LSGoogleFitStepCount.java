@@ -47,6 +47,7 @@ public class LSGoogleFitStepCount implements Runnable {
         DataReadResult dataReadResult =
                 Fitness.HistoryApi.readData(client, readRequest).await(1, TimeUnit.MINUTES);
         getStepData(dataReadResult);
+        notifyStepCountRetrieved(mStepmap);
 
     }
 
@@ -95,7 +96,7 @@ public class LSGoogleFitStepCount implements Runnable {
             Log.i( TAG , mDateFormat.format(entry.getKey()) + "----" + entry.getValue() );
         }
 
-        notifyStepCountRetrieved(mStepmap);
+
     }
 
     /**

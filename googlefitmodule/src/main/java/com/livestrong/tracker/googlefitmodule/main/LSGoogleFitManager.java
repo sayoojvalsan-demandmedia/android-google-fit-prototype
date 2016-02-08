@@ -33,6 +33,7 @@ public class LSGoogleFitManager {
     private LSGoogleFitServiceReciever mReciever;
     private List<LSGoogleFitObserver> mObservers;
     private int mObserverState;
+    private int mFlagService;
     public static final int LISTENER_SET = 1;
     public static final String TAG = "FitnessClient";
     public static final String GET_HISTORY = "FitnessHistory";
@@ -40,10 +41,14 @@ public class LSGoogleFitManager {
     public static final String FIT_CONNECTED = "Connected";
     public static final String FIT_DISCONNECTED = "Service Disconnected";
     public static final String MANAGER_NULL ="Manager not initialized";
+    public static final int SERVICE_RUNNING = 1;
+    public static final int SERVICE_STOPPED = 0;
+
 
     private LSGoogleFitManager(Context context, LSGoogleFitConnectionListener lsGoogleFitConnectionListener){
         this.mContext = context.getApplicationContext();
         this.mConnectionListener = lsGoogleFitConnectionListener;
+        mFlagService = 0;
         mObservers = new ArrayList<LSGoogleFitObserver>();
         buildFitnessClient(context);
 
@@ -139,9 +144,13 @@ public class LSGoogleFitManager {
     }
 
     public void startLSGoogleFitService(){
-        Intent intent = new Intent(mContext, LSGoogleFitService.class);
-        intent.setAction(GET_HISTORY);
-        mContext.startService(intent);
+        if(mFlagService == SERVICE_STOPPED){
+            Intent intent = new Intent(mContext, LSGoogleFitService.class);
+            intent.setAction(GET_HISTORY);
+            mFlagService = SERVICE_RUNNING;
+            mContext.startService(intent);
+        }
+
 
     }
     void notifyConnectionStatus(String status){
@@ -203,7 +212,13 @@ public class LSGoogleFitManager {
         mContext.unregisterReceiver(mReciever);
     }
 
+    public int getmFlagService() {
+        return mFlagService;
+    }
 
+    public void setmFlagService(int flagService) {
+        mFlagService = flagService;
+    }
 }
 
 

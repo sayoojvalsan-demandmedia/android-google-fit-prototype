@@ -5,14 +5,14 @@
         jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="c2f68c3aab4eb25c51d3f24217f6e303e9908374">
+        sha1="b7a33ded63d25be1ad58486c5098e67dc574b29e">
         <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/android-google-fit-prototype-googlefitmodule-unspecified_36c334d11bd563780c3c04971aa1f00648c56d2f.jar" />
     </item>
     <item
         jar="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/exploded-aar/android-google-fit-prototype/googlefitmodule/unspecified/jars/libs/greendao-2.1.0.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="903ab3ca0ab064ee6677eba26833856d3183c805">
+        sha1="e955f6e4f5411747786a8211686d87df81210ce4">
         <dex dex="/Users/shambhavipunja/AndroidStudioProjects/android-google-fit-prototype/app/build/intermediates/pre-dexed/debug/greendao-2.1.0_6fccd344dd623181f48bbd3f67b1a20b9c9a9253.jar" />
     </item>
 

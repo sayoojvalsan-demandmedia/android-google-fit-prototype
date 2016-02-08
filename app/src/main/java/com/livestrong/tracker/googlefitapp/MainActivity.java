@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements LSGoogleFitConnec
     protected void onStart() {
         super.onStart();
         LSGoogleFitManager.getLsGoogleFitManager().startLSGoogleFitService();
+
     }
 
     @Override

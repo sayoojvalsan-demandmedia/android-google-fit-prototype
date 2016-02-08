@@ -31,8 +31,7 @@ public class FitnessDataStoreTask {
                 list.add(fit);
             }
             //insert in db
-            LSGoogleFitDatabaseConnection.getInstance().insert(list);
-
+                                     LSGoogleFitDatabaseConnection.getInstance().insert(list);
 
             /* For Log purpose */
             List<FitnessData> dataList = LSGoogleFitDatabaseConnection.getInstance().getAll();
